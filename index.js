@@ -44,6 +44,13 @@ async function run() {
       const service = await serviceCollection.findOne(query);
       res.send(service);
     });
+
+    // ADD NEW PACKAGE
+    app.post("/add-new-package", async (req, res) => {
+      const packageDetails = req.body;
+      const result = await serviceCollection.insertOne(packageDetails);
+      res.json(result);
+    });
   } finally {
   }
 }
