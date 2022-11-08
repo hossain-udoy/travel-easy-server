@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 // const jwt = require("jsonwebtoken");
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 require("dotenv").config();
 
 const app = express();
@@ -22,18 +22,27 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     const serviceCollection = client.db("travelEasy").collection("services");
+    // get limited data
     app.get("/limit", async (req, res) => {
       const query = {};
       const cursor = serviceCollection.find(query);
       const services = await cursor.limit(3).toArray();
-      res.send({ count, services });
+      res.send(services);
     });
-
+    // get full data
     app.get("/services", async (req, res) => {
       const query = {};
       const cursor = serviceCollection.find(query);
       const services = await cursor.toArray();
       res.send(services);
+    });
+
+    // single service query
+    app.get("/services/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const service = await serviceCollection.findOne(query);
+      res.send(service);
     });
   } finally {
   }
