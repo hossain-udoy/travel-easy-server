@@ -22,6 +22,12 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     const serviceCollection = client.db("travelEasy").collection("services");
+    app.get("/limit", async (req, res) => {
+      const query = {};
+      const cursor = serviceCollection.find(query);
+      const services = await cursor.limit(3).toArray();
+      res.send({ count, services });
+    });
 
     app.get("/services", async (req, res) => {
       const query = {};
