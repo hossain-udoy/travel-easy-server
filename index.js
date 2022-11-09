@@ -26,7 +26,7 @@ async function run() {
     app.get("/limit", async (req, res) => {
       const query = {};
       const cursor = serviceCollection.find(query);
-      const services = await cursor.limit(3).toArray();
+      const services = await cursor.sort({ _id: -1 }).limit(3).toArray();
       res.send(services);
     });
     // get full data
@@ -49,7 +49,7 @@ async function run() {
     app.post("/add-new-package", async (req, res) => {
       const packageDetails = req.body;
       const result = await serviceCollection.insertOne(packageDetails);
-      res.json(result);
+      res.send(result);
     });
   } finally {
   }
