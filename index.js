@@ -22,6 +22,7 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     const serviceCollection = client.db("travelEasy").collection("services");
+    const reviewCollection = client.db("travelEasy").collection("reviews");
     // get limited data
     app.get("/limit", async (req, res) => {
       const query = {};
@@ -49,6 +50,12 @@ async function run() {
     app.post("/add-new-package", async (req, res) => {
       const packageDetails = req.body;
       const result = await serviceCollection.insertOne(packageDetails);
+      res.send(result);
+    });
+
+    app.post("/review", async (req, res) => {
+      const review = req.body;
+      const result = await reviewCollection.insertOne(review);
       res.send(result);
     });
   } finally {
