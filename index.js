@@ -140,7 +140,7 @@ async function run() {
         };
       }
       const cursor = reviewCollection.find(query);
-      const result = await cursor.sort({ _id: -1 }).toArray();
+      const result = await cursor.sort({ currentDate: -1 }).toArray();
       res.send(result);
     });
   } finally {
